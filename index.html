@@ -9,8 +9,11 @@
 <link rel="manifest" href="manifest.json">
 <link rel="icon" href="icons/favicon-64.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="PK Tri">
+<meta name="format-detection" content="telephone=no">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600&family=Noto+Sans+Telugu:wght@400;600&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap">
 <link rel="stylesheet" href="style.css">
@@ -18,14 +21,75 @@
 <body>
 <div class="app">
 <header class="top">
-<div class="brand"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIxIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiMxODEwNGUiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiM3MDM2YjAiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjExNSIgZmlsbD0idXJsKCNnKSIvPjx0ZXh0IHg9IjI1NiIgeT0iMzIwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0iQXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWYiIGZvbnQtd2VpZ2h0PSI4MDAiIGZvbnQtc2l6ZT0iMjA1IiBmaWxsPSIjZmZmIj5QSzwvdGV4dD48cmVjdCB4PSIxMzUiIHk9IjM1MCIgd2lkdGg9IjczIiBoZWlnaHQ9IjIzIiByeD0iMTEuNSIgZmlsbD0iI2ZmOTkzMyIvPjxyZWN0IHg9IjIyMCIgeT0iMzUwIiB3aWR0aD0iNzMiIGhlaWdodD0iMjMiIHJ4PSIxMS41IiBmaWxsPSIjZmZmIi8+PHJlY3QgeD0iMzA1IiB5PSIzNTAiIHdpZHRoPSI3MyIgaGVpZ2h0PSIyMyIgcng9IjExLjUiIGZpbGw9IiMxM2I0NTAiLz48L3N2Zz4K" alt="" width="42" height="42"><div><b>PK Tri Translator</b><small>తెలుగు · English · हिन्दी</small></div></div>
-<div class="acts"><button class="pill" id="install" hidden>Install</button><button class="pill" id="go">Translate</button><button class="pill" id="clr">Clear</button></div>
+ <button class="ic big" id="back" hidden aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+ <div class="brand"><img id="brandImg" src="icons/icon-192.png" alt="" width="42" height="42"><div><b id="title">PK Tri Translator</b><small id="sub">తెలుగు · English · हिन्दी</small></div></div>
+ <div class="acts"><button class="pill" id="go">Translate</button><button class="ic big" id="menuBtn" aria-label="More options" aria-haspopup="true"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg></button></div>
 </header>
 <div id="status" role="status"></div>
-<main id="cards"></main>
-<p class="foot">Type or speak in any language. The other two follow instantly.</p>
+
+<div id="home"><main id="cards"></main>
+<button class="more" id="moreBtn">🌐 More languages</button><p class="foot">Type or speak in any language. The other two follow instantly.<br>Tip: long-press a mic for more options.</p></div>
+
+<section class="screen" id="s-settings" hidden>
+ <div class="group"><h3>Appearance</h3>
+  <label class="row">Theme <select id="setTheme"><option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option></select></label>
+  <label class="row">Text size <input type="range" id="setFs" min="0.9" max="1.6" step="0.1"></label></div>
+ <div class="group"><h3>Translation</h3>
+  <label class="row">Translate while typing <input type="checkbox" class="sw" id="setAuto"></label>
+  <label class="row">Save history on this device <input type="checkbox" class="sw" id="setHist"></label></div>
+ <div class="group"><h3>Voice</h3>
+  <label class="row">Continuous listening <input type="checkbox" class="sw" id="setCont"></label>
+  <p class="hint">Long-press any mic to change its accent or clear its box.</p></div>
+ <div class="group"><h3>Data</h3><button class="btn" id="clrHist">Clear history</button><button class="btn" id="resetS">Reset settings</button></div>
+</section>
+
+<section class="screen" id="s-history" hidden><div id="histList"></div><button class="btn" id="clrHist2">Clear history</button></section>
+
+<section class="screen" id="s-login" hidden>
+ <div id="lp-off" class="panel" hidden><h3>Sign-in is not set up</h3><p class="hint">The app owner adds Supabase details in <code>config.js</code> (see SETUP.md). You can use the translator without signing in.</p></div>
+ <div id="lp-email" class="panel" hidden><h3>Sign in with email</h3><p class="hint">We email you a one-time code. No password needed.</p>
+  <input id="lEmail" type="email" autocomplete="email" placeholder="you@example.com"><button class="btn primary" id="lSend">Send code</button><button class="link" id="lToPass">Use password instead</button></div>
+ <div id="lp-code" class="panel" hidden><h3 id="cTitle">Enter code</h3><p class="hint" id="cMsg"></p>
+  <input id="lCode" inputmode="numeric" maxlength="10" autocomplete="one-time-code" placeholder="Code from email"><button class="btn primary" id="lVerify">Verify</button><button class="link" id="lResend">Resend code</button><button class="link" id="lChange">Change email</button></div>
+ <div id="lp-pass" class="panel" hidden><h3>Sign in with password</h3>
+  <input id="pEmail" type="email" autocomplete="email" placeholder="you@example.com"><input id="pPass" type="password" autocomplete="current-password" placeholder="Password"><button class="btn primary" id="pSign">Sign in</button><button class="link" id="pForgot">Forgot password?</button><button class="link" id="pToOtp">Use email code instead</button></div>
+ <div id="lp-new" class="panel" hidden><h3 id="nTitle">Set a password</h3><p class="hint" id="nMsg">Optional. Lets you sign in without a code next time.</p>
+  <input id="nPass" type="password" autocomplete="new-password" placeholder="New password (min 8 characters)"><button class="btn primary" id="nSave">Save password</button><button class="link" id="nSkip">Skip</button></div>
+ <div id="lp-acct" class="panel" hidden><h3>Your account</h3><p>Signed in as <b id="aEmail"></b></p><button class="btn" id="aPass">Change password</button><button class="btn" id="aOut">Sign out</button></div>
+</section>
+
+<section class="screen" id="s-feedback" hidden>
+ <div class="panel"><h3>Rate PK Tri Translator</h3><div class="stars" id="stars" role="radiogroup" aria-label="Rating"></div>
+  <textarea id="fbMsg" class="fb" rows="5" placeholder="Tell us what to improve (optional)"></textarea>
+  <button class="btn primary" id="fbSend">Send</button><div id="storeLinks"></div></div>
+</section>
+
+<section class="screen" id="s-about" hidden>
+ <div class="panel"><h3>PK Tri Translator</h3><p class="hint">Version <b id="verNow"></b></p><p id="updMsg" class="hint"></p>
+  <button class="btn" id="updCheck">Check for updates</button><button class="btn primary" id="updApply" hidden>Update now</button></div>
+ <div class="panel"><h3>Web app link</h3><div class="linkbox" id="webLink"></div><button class="btn" id="copyLink">Copy link</button><button class="btn" id="shareBtn">Share app</button></div>
+ <div class="panel"><h3>Get the app</h3><p class="hint" id="dlHint"></p>
+  <button class="btn primary" id="installBtn" hidden>Install on this device</button>
+  <a class="btn" id="apkLink" hidden>Download APK</a><a class="btn" id="playLink" hidden>Google Play</a><a class="btn" id="storeLink" hidden>App Store</a>
+  <div class="steps" id="iosSteps" hidden><b>iPhone / iPad (Safari)</b><ol><li>Tap the Share button.</li><li>Choose “Add to Home Screen”.</li><li>Tap Add.</li></ol></div>
+  <div class="steps" id="andSteps" hidden><b>Android (Chrome)</b><ol><li>Tap ⋮ in Chrome.</li><li>Choose “Install app”.</li></ol></div></div>
+</section>
 </div>
-<script>window.PK_STANDALONE=true;</script>
+
+<div id="menu" class="menu" hidden role="menu">
+ <button role="menuitem" data-act="settings">⚙️ Settings</button>
+ <button role="menuitem" data-act="history">🕘 History</button>
+ <button role="menuitem" data-act="login" id="mAcct">👤 Sign in</button>
+ <button role="menuitem" data-act="feedback">⭐ Rate &amp; feedback</button>
+ <button role="menuitem" data-act="clear">🗑️ Clear all boxes</button>
+ <button role="menuitem" data-act="share">↗️ Share app</button>
+ <button role="menuitem" data-act="about">⬇️ Get the app</button>
+ <button role="menuitem" data-act="update">🔄 Check for updates</button>
+ <button role="menuitem" data-act="about2">ℹ️ About</button>
+</div>
+<div id="sheetBg" class="sheetbg" hidden></div><div id="sheet" class="sheet" hidden role="dialog"></div>
+<div id="toast" class="toast" hidden role="status"></div>
+<script src="config.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
