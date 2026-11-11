@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PK Tri Translator</title>
+<meta name="theme-color" content="#18104e">
+<meta name="description" content="Telugu · English · Hindi translator with voice input">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/favicon-64.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="PK Tri">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;600&family=Noto+Sans+Telugu:wght@400;600&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="app">
+<header class="top">
+<div class="brand"><img src="icons/icon.svg" alt="" width="42" height="42"><div><b>PK Tri Translator</b><small>తెలుగు · English · हिन्दी</small></div></div>
+<div class="acts"><button class="pill" id="install" hidden>Install</button><button class="pill" id="go">Translate</button><button class="pill" id="clr">Clear</button></div>
+</header>
+<div id="status" role="status"></div>
+<main id="cards"></main>
+<p class="foot">Type or speak in any language. The other two follow instantly.</p>
+</div>
+<script>window.PK_STANDALONE=true;</script>
+<script src="app.js"></script>
+</body>
+</html>
